@@ -223,7 +223,7 @@ void SinglyLL :: DeleteAtPos(int iPos)
         temp -> next = tempx -> next;
         delete tempx;
     }
-    iCount++;
+    iCount--;
 }
 
 int main()
