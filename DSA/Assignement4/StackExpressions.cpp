@@ -29,9 +29,10 @@ class Stack
         void Display();
         int Count();
         int Precedence(char);
-        string InfixToPostfix(string);
+        void InfixToPostfix(string);
         char InfixToPrefix();
-        void DisplayExp(string);
+        void DisplayExp(char *);
+        int isOperand(char);
 };
 
 Stack :: Stack()
@@ -128,47 +129,46 @@ int Stack :: Count()
     return iCount;
 }
 
-string Stack :: InfixToPostfix(string InfixExp)
-{
+void Stack :: InfixToPostfix(string InfixExp)
+{   
     Stack obj;
-    string PostFixExp = "";
 
+    string PostfixExp = new char(sizeof(InfixExp));
     int i = 0 , j = 0;
 
-    while(InfixExp[i] != '\0')
+    for(i = 0 ; i < InfixExp.length() ; )
     {
-        if((InfixExp[i] < 33 && InfixExp[i] > 47))
+        if(!isOperand(InfixExp[i]))
         {
-            PostFixExp[j] = InfixExp[i];
+            PostfixExp[j] = InfixExp[i];
             i++;
             j++;
         }
-        else
-        {
-            if(Precedence(InfixExp[i]) > TopElement() || obj.First == NULL)
+        else if(isOperand(InfixExp[i]))
+        {   
+            if(Precedence(InfixExp[i]) > Precedence(obj.TopElement()) || obj.First == NULL)
             {
                 obj.Push(InfixExp[i]);
                 i++;
             }
             else
-            {   
-                char cRet = '\0';
-                cRet = obj.Pop();
-                PostFixExp[j] = cRet;
+            {
+                PostfixExp[j] = obj.Pop();
                 j++;
             }
         }
     }
     while(obj.First != NULL)
     {
-        char cRet = '\0';
-        cRet = obj.Pop();
-        PostFixExp[j] = cRet;
+        PostfixExp[j] = obj.Pop();
+        // cout<<PostfixExp[j]<<"\n";
         j++;
     }
-    PostFixExp[j] = '\0';
-
-    return PostFixExp;
+    
+    for(int k = 0 ; k < PostfixExp.length() ; k++)
+    {
+        cout<<PostfixExp[k]<<"\t";
+    }
 }
 
 int Stack :: Precedence(char cValue)
@@ -187,15 +187,13 @@ int Stack :: Precedence(char cValue)
     }
 }
 
-void Stack :: DisplayExp(string sValue)
-{   
-    int i = 0;
-
-    while(sValue[i] != '\0')
+int Stack :: isOperand(char cValue)
+{
+    if(cValue >= '!' && cValue <= '/')
     {
-        cout<<sValue[i]<<"\t";
-        i++;
+        return 1;
     }
+    return 0;
 }
 
 int main()
@@ -205,8 +203,8 @@ int main()
     int iChoice = 1;
     char cValue = 0;
     char cRet = '\0';
-    string InfixExp;
-    string PostExp;
+    string InfixExp = "";
+    char * PostExp = NULL;
 
     cout<<"-----------------------------------------------\n";
     cout<<"Dynamic implementation of stack \n";
@@ -261,8 +259,7 @@ int main()
 
             case 6:
                 InfixExp = "a*b/c+o";
-                PostExp = obj.InfixToPostfix(InfixExp);
-                obj.DisplayExp(PostExp);
+                obj.InfixToPostfix(InfixExp);
                 break;
             
             case 0:
