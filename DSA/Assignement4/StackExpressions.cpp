@@ -29,7 +29,7 @@ class Stack
         void Display();
         int Count();
         int Precedence(char);
-        void InfixToPostfix(string);
+        void InfixToPostfix(char *);
         char InfixToPrefix();
         void DisplayExp(char *);
         int isOperand(char);
@@ -129,46 +129,88 @@ int Stack :: Count()
     return iCount;
 }
 
-void Stack :: InfixToPostfix(string InfixExp)
-{   
-    Stack obj;
+// void Stack :: InfixToPostfix(string InfixExp)
+// {   
+//     Stack obj;
 
-    string PostfixExp = new char(sizeof(InfixExp));
-    int i = 0 , j = 0;
+//     string PostfixExp = new char(sizeof(InfixExp));
+//     int i = 0 , j = 0;
 
-    for(i = 0 ; i < InfixExp.length() ; )
-    {
-        if(!isOperand(InfixExp[i]))
-        {
-            PostfixExp[j] = InfixExp[i];
-            i++;
-            j++;
-        }
-        else if(isOperand(InfixExp[i]))
-        {   
-            if(Precedence(InfixExp[i]) > Precedence(obj.TopElement()) || obj.First == NULL)
-            {
-                obj.Push(InfixExp[i]);
-                i++;
-            }
-            else
-            {
-                PostfixExp[j] = obj.Pop();
-                j++;
-            }
-        }
-    }
-    while(obj.First != NULL)
-    {
-        PostfixExp[j] = obj.Pop();
-        // cout<<PostfixExp[j]<<"\n";
-        j++;
-    }
+//     for(i = 0 ; i < InfixExp.length() ; )
+//     {
+//         if(!isOperand(InfixExp[i]))
+//         {
+//             PostfixExp[j] = InfixExp[i];
+//             i++;
+//             j++;
+//         }
+//         else if(isOperand(InfixExp[i]))
+//         {   
+//             if(Precedence(InfixExp[i]) > Precedence(obj.TopElement()) || obj.First == NULL)
+//             {
+//                 obj.Push(InfixExp[i]);
+//                 i++;
+//             }
+//             else
+//             {
+//                 PostfixExp[j] = obj.Pop();
+//                 j++;
+//             }
+//         }
+//     }
+//     while(obj.First != NULL)
+//     {
+//         PostfixExp[j] = obj.Pop();
+//         cout<<PostfixExp[j]<<"\n";
+//         j++;
+//     }
+//     cout<<PostfixExp<<"\n";
     
-    for(int k = 0 ; k < PostfixExp.length() ; k++)
+//     // for(int k = 0 ; k < PostfixExp.length() ; k++)
+//     // {
+//     //     cout<<PostfixExp[k]<<"\t";
+//     // }
+// }
+
+void Stack :: InfixToPostfix(char * expression)
+{
+    int i, j;  
+
+    Stack obj;
+  
+    for (i = 0, j = -1; expression[i]; ++i)   
+    {   
+       if (isOperand(expression[i]))   
+            expression[++j] = expression[i];   
+  
+        else if (expression[i] == '(')   
+            obj.Push(expression[i]);   
+  
+        else if (expression[i] == ')')   
+        {   
+            while (obj.First != NULL && obj.TopElement() != '(')   
+                expression[++j] = obj.Pop();   
+            if (obj.First != NULL && obj.TopElement() != '(')   
+                return;             
+            else  
+                obj.Pop();   
+        }  
+        else   
+        {   
+            while (obj.First != NULL && Precedence(expression[i]) <= Precedence(obj.TopElement()))   
+                expression[++j] = obj.Pop();   
+            obj.Push(expression[i]);   
+        }   
+  
+    }  
+
+    while (obj.First != NULL)   
     {
-        cout<<PostfixExp[k]<<"\t";
+        expression[++j] = obj.Pop();   
     }
+  
+    expression[++j] = '\0';   
+    printf( "%s", expression); 
 }
 
 int Stack :: Precedence(char cValue)
@@ -189,7 +231,7 @@ int Stack :: Precedence(char cValue)
 
 int Stack :: isOperand(char cValue)
 {
-    if(cValue >= '!' && cValue <= '/')
+    if(cValue == '+' || cValue == '/' || cValue == '-' || cValue == '*')
     {
         return 1;
     }
@@ -203,8 +245,7 @@ int main()
     int iChoice = 1;
     char cValue = 0;
     char cRet = '\0';
-    string InfixExp = "";
-    char * PostExp = NULL;
+    char InfixExp[] = "((x+(y*z))-w)";
 
     cout<<"-----------------------------------------------\n";
     cout<<"Dynamic implementation of stack \n";
@@ -258,7 +299,7 @@ int main()
                 break;
 
             case 6:
-                InfixExp = "a*b/c+o";
+                // InfixExp = "((x+(y*z))-w)";
                 obj.InfixToPostfix(InfixExp);
                 break;
             
