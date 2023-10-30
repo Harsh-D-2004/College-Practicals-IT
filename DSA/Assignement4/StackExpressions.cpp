@@ -29,10 +29,10 @@ class Stack
         void Display();
         int Count();
         int Precedence(char);
-        void InfixToPostfix(char *);
-        char InfixToPrefix();
-        void DisplayExp(char *);
+        void InfixToPostfix(string);
+        char InfixToPrefix(string);
         int isOperand(char);
+        bool isEmpty();
 };
 
 Stack :: Stack()
@@ -81,7 +81,7 @@ char Stack :: Pop()     //DeleteLast()
     {
         temp = First;
 
-        while(temp -> next -> next)
+        while(temp -> next -> next != NULL)
         {
             temp = temp -> next;
         }
@@ -129,88 +129,44 @@ int Stack :: Count()
     return iCount;
 }
 
-// void Stack :: InfixToPostfix(string InfixExp)
-// {   
-//     Stack obj;
-
-//     string PostfixExp = new char(sizeof(InfixExp));
-//     int i = 0 , j = 0;
-
-//     for(i = 0 ; i < InfixExp.length() ; )
-//     {
-//         if(!isOperand(InfixExp[i]))
-//         {
-//             PostfixExp[j] = InfixExp[i];
-//             i++;
-//             j++;
-//         }
-//         else if(isOperand(InfixExp[i]))
-//         {   
-//             if(Precedence(InfixExp[i]) > Precedence(obj.TopElement()) || obj.First == NULL)
-//             {
-//                 obj.Push(InfixExp[i]);
-//                 i++;
-//             }
-//             else
-//             {
-//                 PostfixExp[j] = obj.Pop();
-//                 j++;
-//             }
-//         }
-//     }
-//     while(obj.First != NULL)
-//     {
-//         PostfixExp[j] = obj.Pop();
-//         cout<<PostfixExp[j]<<"\n";
-//         j++;
-//     }
-//     cout<<PostfixExp<<"\n";
-    
-//     // for(int k = 0 ; k < PostfixExp.length() ; k++)
-//     // {
-//     //     cout<<PostfixExp[k]<<"\t";
-//     // }
-// }
-
-void Stack :: InfixToPostfix(char * expression)
-{
-    int i, j;  
-
+void Stack :: InfixToPostfix(string InfixExp)
+{   
     Stack obj;
-  
-    for (i = 0, j = -1; expression[i]; ++i)   
-    {   
-       if (isOperand(expression[i]))   
-            expression[++j] = expression[i];   
-  
-        else if (expression[i] == '(')   
-            obj.Push(expression[i]);   
-  
-        else if (expression[i] == ')')   
-        {   
-            while (obj.First != NULL && obj.TopElement() != '(')   
-                expression[++j] = obj.Pop();   
-            if (obj.First != NULL && obj.TopElement() != '(')   
-                return;             
-            else  
-                obj.Pop();   
-        }  
-        else   
-        {   
-            while (obj.First != NULL && Precedence(expression[i]) <= Precedence(obj.TopElement()))   
-                expression[++j] = obj.Pop();   
-            obj.Push(expression[i]);   
-        }   
-  
-    }  
 
-    while (obj.First != NULL)   
+    string PostfixExp = new char(sizeof(InfixExp));
+    int i = 0 , j = 0;
+
+    for(i = 0 ; i < InfixExp.length() ; )
     {
-        expression[++j] = obj.Pop();   
+        if(!isOperand(InfixExp[i]))
+        {
+            PostfixExp[j] = InfixExp[i];
+            i++;
+            j++;
+        }
+        else if(isOperand(InfixExp[i]))
+        {   
+            if(Precedence(InfixExp[i]) > Precedence(obj.TopElement()) || obj.First == NULL)
+            {
+                obj.Push(InfixExp[i]);
+                i++;
+            }
+            else
+            {
+                PostfixExp[j] = obj.Pop();
+                j++;
+            }
+        }
+
     }
-  
-    expression[++j] = '\0';   
-    printf( "%s", expression); 
+    cout<<PostfixExp<<"\n";
+    while(obj.iCount != 0)
+    {   
+        char c = obj.Pop();
+        PostfixExp[j] = c;
+        j++;
+    }
+    cout<<PostfixExp<<"\n";
 }
 
 int Stack :: Precedence(char cValue)
@@ -229,6 +185,15 @@ int Stack :: Precedence(char cValue)
     }
 }
 
+bool Stack :: isEmpty()
+{
+    if(First == NULL)
+    {
+        return 1;
+    }
+    return 0;
+}
+
 int Stack :: isOperand(char cValue)
 {
     if(cValue == '+' || cValue == '/' || cValue == '-' || cValue == '*')
@@ -245,72 +210,75 @@ int main()
     int iChoice = 1;
     char cValue = 0;
     char cRet = '\0';
-    char InfixExp[] = "((x+(y*z))-w)";
+    string InfixExp = "((x+(y*z))-w)";
 
-    cout<<"-----------------------------------------------\n";
-    cout<<"Dynamic implementation of stack \n";
-    cout<<"-----------------------------------------------\n";
+    // cout<<"-----------------------------------------------\n";
+    // cout<<"Dynamic implementation of stack \n";
+    // cout<<"-----------------------------------------------\n";
 
-    while(iChoice != 0)
-    {
-        cout<<"-----------------------------------------------\n";
+    // while(iChoice != 0)
+    // {
+    //     cout<<"-----------------------------------------------\n";
 
-        cout<<"Please enetr the option : \n";
+    //     cout<<"Please enetr the option : \n";
 
-        cout<<"1 : Push element into stack\n";
-        cout<<"2 : Pop element from stack\n";
-        cout<<"3 : Display elements from stack\n";
-        cout<<"4 : Count elements from stack\n";
-        cout<<"5 : Show top element from stack\n";
-        cout<<"6 : Convert Infix to PostFix\n";
-        cout<<"0 : Terminate the application\n";
+    //     cout<<"1 : Push element into stack\n";
+    //     cout<<"2 : Pop element from stack\n";
+    //     cout<<"3 : Display elements from stack\n";
+    //     cout<<"4 : Count elements from stack\n";
+    //     cout<<"5 : Show top element from stack\n";
+    //     cout<<"6 : Convert Infix to PostFix\n";
+    //     cout<<"0 : Terminate the application\n";
 
-        cout<<"-----------------------------------------------\n";
+    //     cout<<"-----------------------------------------------\n";
 
-        cout<<"Please enter the option : \n";
-        cin>>iChoice;
+    //     cout<<"Please enter the option : \n";
+    //     cin>>iChoice;
 
-        switch(iChoice)
-        {
-            case 1:
-                cout<<"Enter the element that you want to push : \n";
-                cin>>cValue;
-                obj.Push(cValue);
-                break;
+    //     switch(iChoice)
+    //     {
+    //         case 1:
+    //             cout<<"Enter the element that you want to push : \n";
+    //             cin>>cValue;
+    //             obj.Push(cValue);
+    //             break;
             
-            case 2:
-                cRet = obj.Pop();
-                if(cRet != '\0')
-                {
-                    cout<<"Popped element from stack is : "<<cRet<<"\n";
-                }
-                break;
+    //         case 2:
+    //             cRet = obj.Pop();
+    //             if(cRet != '\0')
+    //             {
+    //                 cout<<"Popped element from stack is : "<<cRet<<"\n";
+    //             }
+    //             break;
 
-            case 3:
-                obj.Display();
-                break;
+    //         case 3:
+    //             obj.Display();
+    //             break;
             
-            case 4:
-                cout<<"The number of elements is : "<<obj.Count()<<"\n";
-                break;
+    //         case 4:
+    //             cout<<"The number of elements is : "<<obj.Count()<<"\n";
+    //             break;
 
-            case 5:
-                cout<<"The top element is : "<<obj.TopElement()<<"\n";
-                break;
+    //         case 5:
+    //             cout<<"The top element is : "<<obj.TopElement()<<"\n";
+    //             break;
 
-            case 6:
-                // InfixExp = "((x+(y*z))-w)";
-                obj.InfixToPostfix(InfixExp);
-                break;
+    //         case 6:
+    //             // InfixExp = "((x+(y*z))-w)";
+    //             obj.InfixToPostfix(InfixExp);
+    //             break;
             
-            case 0:
-                cout<<"Thankyou for using application \n";
-                break;
+    //         case 0:
+    //             cout<<"Thankyou for using application \n";
+    //             break;
 
-            default:
-                cout<<"Enter valid option \n";
-                break;
-        }
-    }
+    //         default:
+    //             cout<<"Enter valid option \n";
+    //             break;
+    //     }
+    // }
+
+    obj.InfixToPostfix(InfixExp);
+
     return 0;
 }
