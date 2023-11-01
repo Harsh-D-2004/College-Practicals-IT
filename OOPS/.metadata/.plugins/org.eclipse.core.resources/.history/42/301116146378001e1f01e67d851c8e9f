@@ -1,0 +1,74 @@
+package com.prj.sbi;
+
+import java.util.Scanner;
+
+import com.prj.bank.Bank;
+
+public class StateBankOfIndia implements Bank{
+	
+	long accID;
+	String accName;
+	String accHolder;
+	int age;
+	String address;
+	long ifsc;
+	long phoneNumber;
+	
+	static long balance;
+	long deposit;
+	long withraw;
+	
+	@Override
+	public void createAccount() {
+		
+		Scanner sobj = new Scanner(System.in);
+		
+		System.out.println("Enter account ID");
+		accID = sobj.nextLong();
+		
+		System.out.println("Enter account Name");
+		accName = sobj.nextLine();
+		
+		System.out.println("Enter account holder name ");
+		accHolder = sobj.nextLine();
+		
+		System.out.println("Enter accountholder age ");
+		age = sobj.nextInt();
+		
+		System.out.println("Enter accountholder address ");
+		address = sobj.nextLine();
+		
+		System.out.println("Enter IFSC code");
+		ifsc = sobj.nextLong();
+		
+		System.out.println("Enter accountholder phone number ");
+		phoneNumber = sobj.nextLong();
+		
+	}
+
+	@Override
+	public int deposit() {
+		
+		Scanner sobj = new Scanner(System.in);
+		
+		System.out.println("Enter the amount you want to deposit ");
+		deposit = sobj.nextLong();
+		
+		balance = balance + deposit;
+		
+		return balance;
+	}
+
+	@Override
+	public int withraw() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int checkAccountDetails() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

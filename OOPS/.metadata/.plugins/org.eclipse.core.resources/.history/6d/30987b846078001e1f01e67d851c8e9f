@@ -1,0 +1,8 @@
+package com.prj.bank;
+
+public interface Bank {
+	
+	public void createAccount();
+	
+	public int deposit();
+}

@@ -1,0 +1,101 @@
+package com.prj.sbi;
+
+import java.util.Scanner;
+
+import com.prj.bank.Bank;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;    
+
+public class StateBankOfIndia implements Bank{
+	
+	long accID;
+	String accName;
+	String accHolder;
+	int age;
+	String address;
+	long ifsc;
+	long phoneNumber;
+	
+	static long balance;
+	long deposit;
+	long withraw;
+	
+	@Override
+	public void createAccount() {
+		
+		Scanner sobj = new Scanner(System.in);
+		
+		System.out.println("Enter account ID");
+		accID = sobj.nextLong();
+		
+		System.out.println("Enter account Name");
+		accName = sobj.nextLine();
+		
+		System.out.println("Enter account holder name ");
+		accHolder = sobj.nextLine();
+		
+		System.out.println("Enter accountholder age ");
+		age = sobj.nextInt();
+		
+		System.out.println("Enter accountholder address ");
+		address = sobj.nextLine();
+		
+		System.out.println("Enter IFSC code");
+		ifsc = sobj.nextLong();
+		
+		System.out.println("Enter accountholder phone number ");
+		phoneNumber = sobj.nextLong();
+		
+	}
+
+	@Override
+	public long deposit() {
+		
+		Scanner sobj = new Scanner(System.in);
+		
+		System.out.println("Enter the amount you want to deposit ");
+		deposit = sobj.nextLong();
+		
+		balance = balance + deposit;
+		
+		return balance;
+	}
+
+	@Override
+	public long withraw() {
+		
+		Scanner sobj = new Scanner(System.in);
+		
+		System.out.println("Enter the amount you want to withraw ");
+		withraw = sobj.nextLong();
+		
+		if(withraw > 10000) {
+			
+			System.out.println("Withraw limit exceeded");
+			return balance;
+			
+		}
+		
+		balance = balance - withraw;
+		
+		return balance;
+	}
+
+	@Override
+	public int checkAccountDetails() {
+		
+		System.out.println("The balance is : " + balance);
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		LocalDateTime now = LocalDateTime.now();  
+		System.out.println(dtf.format(now)); 
+		
+		System.out.println("Last withrawal : " + withraw);
+		
+		System.out.println("Account ID : " + accID);
+		
+		
+		return 0;
+	}
+
+}

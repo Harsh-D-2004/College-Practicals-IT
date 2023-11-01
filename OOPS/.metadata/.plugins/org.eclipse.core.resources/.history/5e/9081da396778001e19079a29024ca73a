@@ -1,0 +1,16 @@
+package com.prj.main;
+
+import com.prj.sbi.StateBankOfIndia;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		StateBankOfIndia sbi = new StateBankOfIndia();
+		sbi.createAccount();
+		sbi.deposit();
+		sbi.withraw();
+		sbi.checkAccountDetails();
+	}
+
+}

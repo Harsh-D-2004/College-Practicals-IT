@@ -1,0 +1,5 @@
+package com.prj.icici;
+
+public class ICICI implements Bank{
+
+}

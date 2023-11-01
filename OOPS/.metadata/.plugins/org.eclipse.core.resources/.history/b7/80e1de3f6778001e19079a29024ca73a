@@ -1,0 +1,17 @@
+package com.prj.main;
+
+import com.prj.sbi.StateBankOfIndia;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Scanner sobj = new Scanner9System.in
+;		
+		System.out.println("Choose Bank : ");
+		int iChoice1 = nextInt()
+		
+		
+	}
+
+}

@@ -1,0 +1,36 @@
+package com.exphandling.main;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String Args[])
+	{
+		Scanner sobj = new Scanner(System.in);
+		
+		try {
+			int num1 = 0;
+			int num2 = 0;
+			float iAns = 0.0f;
+			
+			System.out.println("Enter Number 1 : ");
+			num1 = sobj.nextInt();
+			
+			System.out.println("Enter Number 2 : ");
+			num2 = sobj.nextInt();
+			
+			iAns = num1 / num2;
+			
+			System.out.println("The division is : " + iAns);
+		} catch (ArithmeticException aobj) {
+			
+			System.out.println("Arithmetic Exception occured \n");
+		}catch(InputMismatchException iobj)
+		{
+			System.out.println("Number format exception occured \n");
+		}catch(Exception eobj)
+		{
+			eobj.printStackTrace();
+		}
+	}
+}

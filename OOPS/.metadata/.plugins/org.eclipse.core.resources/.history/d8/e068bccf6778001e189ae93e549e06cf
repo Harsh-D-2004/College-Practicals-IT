@@ -1,0 +1,38 @@
+package com.prj.main;
+
+import java.util.Scanner;
+
+import com.prj.sbi.StateBankOfIndia;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Scanner sobj = new Scanner(System.in);
+;		
+		System.out.println("Choose Bank : ");
+		System.out.println("1 : BankOFBaroda");
+		System.out.println("2 : StaeBankOFIndia");
+		System.out.println("3 : ICICI Bank");
+		int iChoice1 = sobj.nextInt();
+		
+		switch(iChoice1)
+		{
+			case 1:
+				System.out.println("Welcome to Bank of Baroda");
+				
+			case 2:
+				System.out.println("Welcome to State Bank ofIndia");
+				
+			case 3:
+				System.out.println("Welcome to ICICI bank");
+				
+			default:
+				System.out.println("Error");
+		}
+		
+		
+		
+	}
+
+}

@@ -1,0 +1,32 @@
+package com.prj.sbi;
+
+import com.prj.bank.Bank;
+
+public class StateBankOfIndia implements Bank{
+
+	@Override
+	public void createAccount() {
+		
+		
+		
+	}
+
+	@Override
+	public int deposit() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int withraw() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int checkAccountDetails() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}
