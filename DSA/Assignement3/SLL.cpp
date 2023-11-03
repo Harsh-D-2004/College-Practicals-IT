@@ -328,7 +328,8 @@ int main()
             break;
 
         case 6:
-            break;
+            cout<<"Exiting the application................\n"
+            return 0;
 
         default:
             cout << "Invalid choice \n";
