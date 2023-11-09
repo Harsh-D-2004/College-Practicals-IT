@@ -25,30 +25,18 @@ class Main
 			{
 				case 1:
 					Programmer pobj = new Programmer();
-					pobj.getBasicPay();
-					pobj.Calculate();
-					pobj.DisplayPaySlip();
 					break;
 				
 				case 2:
 					AsstManager aobj = new AsstManager();
-					aobj.getBasicPay();
-					aobj.Calculate();
-					aobj.DisplayPaySlip();
 					break;
 					
 				case 3:
 					ProjectManager ppobj = new ProjectManager();
-					ppobj.getBasicPay();
-					ppobj.Calculate();
-					ppobj.DisplayPaySlip();
 					break;
 				
 				case 4:
 					TeamLeader tobj = new TeamLeader();
-					tobj.getBasicPay();
-					tobj.Calculate();
-					tobj.DisplayPaySlip();
 					break;
 					
 				case 5:

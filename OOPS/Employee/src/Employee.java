@@ -23,7 +23,7 @@ public class Employee {
 		Mail_Id = sobj.next();
 		System.out.println("Enter the Address : ");
 		Address = sobj.next();
-		System.out.println("Enter the Mobile No : ");
+		System.out.println("Enter the Mobile No (+91): ");
 		Mobile_No = sobj.nextLong();
 	}
 	

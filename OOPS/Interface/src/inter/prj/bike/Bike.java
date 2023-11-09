@@ -6,13 +6,13 @@ public class Bike implements Vehicle{
 	
 	private int gear;
 	private int speed;
-	final int maxspeed = 180;
+	final int maxspeed = 120;
 	
 	@Override
 	public void gearChange(int a) {
 		
-		if(a > 0)
-		{
+		if(a > 0 && a <= maxspeed)
+		{	
 			gear = a;
 			System.out.println("Gear : " + gear);
 		}
@@ -29,11 +29,33 @@ public class Bike implements Vehicle{
 		if(a < maxspeed)
 		{	
 			speed = speed + a;
-			System.out.println("Speed Changed : " + a);
+			if(gear == 1 && speed <= 25)
+			{
+				System.out.println("Speed Changed : " + a);
+			}
+			else if(gear == 2 && speed > 25 && speed <= 50)
+			{
+				System.out.println("Speed Changed : " + a);
+			}
+			else if(gear == 3 && speed > 50 && speed <= 80)
+			{
+				System.out.println("Speed Changed : " + a);
+			}
+			else if(gear == 4 && speed > 80)
+			{
+				System.out.println("Speed Changed : " + a);
+			}
+			else
+			{
+				System.out.println("Error");
+				speed = speed - a;
+			}
+			
 		}
 		else
 		{
 			System.out.println("Speed cannot be changed");
+			speed = speed - a;
 		}
 		
 	}
