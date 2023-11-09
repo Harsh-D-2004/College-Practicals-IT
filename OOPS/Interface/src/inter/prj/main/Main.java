@@ -18,7 +18,7 @@ public class Main {
 		
 		int iChoice = 0;
 		
-		System.out.println("Bike : ");
+		System.out.println("Bicycle : ");
 		
 		while(true)
 		{	
@@ -35,26 +35,26 @@ public class Main {
 				case 1:
 					System.out.println("Enter how much to change speed : ");
 					int speed = sobj.nextInt();
-					bbobj.speedChange(speed);
-					bbobj.display();
+					bobj.speedChange(speed);
+					bobj.display();
 					break;
 						
 				case 2:
 					System.out.println("Enter how much to apply breaks : ");
 					int breaks = sobj.nextInt();
-					bbobj.applyBreaks(breaks);
-					bbobj.display();
+					bobj.applyBreaks(breaks);
+					bobj.display();
 					break;
 					
 				case 3:
 					System.out.println("Enter which gear to change : ");
 					int gear = sobj.nextInt();
-					bbobj.gearChange(gear);
-					bbobj.display();
+					bobj.gearChange(gear);
+					bobj.display();
 					break;
 				
 				case 4:
-					bbobj.display();
+					bobj.display();
 					break;
 					
 				case 5:
