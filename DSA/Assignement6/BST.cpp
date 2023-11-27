@@ -17,6 +17,15 @@ class BST
         void PreOrder(PNODE);
         void PostOrder(PNODE);
         void InOrder(PNODE);
+        bool Search(PNODE Head , int No);
+        int CountLeafNodes(PNODE Head);
+        PNODE deleteNode(PPNODE , int);
+        int CountNodes(PNODE);
+        int CountParentNodes(PNODE);
+        int maxDepth(PNODE);
+        void mirror(PNODE);
+
+
 };
 
 void BST :: Insert(PPNODE Head , int No)
@@ -95,7 +104,7 @@ void BST :: InOrder(PNODE Head)
     }
 }
 
-bool Search(PNODE Head , int No)
+bool BST :: Search(PNODE Head , int No)
 {
     bool flag = false;
 
@@ -123,7 +132,56 @@ bool Search(PNODE Head , int No)
     return flag;
 }
 
-int CountNodes(PNODE Head)
+PNODE BST :: deleteNode(PPNODE Head, int k)
+{
+    if (*Head == NULL)
+        return *Head;
+
+    PNODE temp = *Head;
+ 
+    if (temp->data > k) {
+        temp->Lchild = deleteNode(&temp -> Lchild, k);
+        return temp;
+    }
+    else if (temp->data < k) {
+        temp->Rchild = deleteNode(&temp->Rchild, k);
+        return temp;
+    }
+
+    if (temp->Lchild == NULL) {
+        PNODE temp = temp->Rchild;
+        delete temp;
+        return temp;
+    }
+    else if (temp->Rchild == NULL) {
+        Node* temp = temp->Lchild;
+        delete temp;
+        return temp;
+    }
+ 
+    else {
+ 
+        PNODE succParent = temp;
+ 
+        PNODE succ = temp->Rchild;
+        while (succ->Lchild != NULL) {
+            succParent = succ;
+            succ = succ->Lchild;
+        }
+
+        if (succParent != temp)
+            succParent->Lchild = succ->Rchild;
+        else
+            succParent->Rchild = succ->Rchild;
+ 
+        temp->data = succ->data;
+ 
+        delete succ;
+        return temp;
+    }
+}
+
+int BST :: CountNodes(PNODE Head)
 {
     static int iCnt = 0;
     if(Head != NULL)
@@ -135,13 +193,14 @@ int CountNodes(PNODE Head)
     return iCnt;
 }
 
-int CountLeafNodes(PNODE Head)
+int BST :: CountLeafNodes(PNODE Head)
 {
     static int iCnt = 0;
     if(Head != NULL)
     {
         if((Head -> Lchild == NULL) && (Head -> Rchild == NULL))
-        {
+        {   
+            cout<<Head->data<<"\t";
             iCnt++;
         }
         CountLeafNodes(Head -> Lchild);
@@ -150,13 +209,14 @@ int CountLeafNodes(PNODE Head)
     return iCnt;
 }
 
-int CountParentNodes(PNODE Head)
+int BST :: CountParentNodes(PNODE Head)
 {
     static int iCnt = 0;
     if(Head != NULL)
     {
         if((Head -> Lchild != NULL) || (Head -> Rchild != NULL))
         {
+            cout<<Head->data<<"\t";
             iCnt++;
         }
         CountParentNodes(Head -> Lchild);
@@ -165,12 +225,45 @@ int CountParentNodes(PNODE Head)
     return iCnt;
 }
 
+int BST :: maxDepth(PNODE Head)
+{
+    if (Head == NULL)
+        return 0;
+
+    else {
+        int lDepth = maxDepth(Head->Lchild);
+        int rDepth = maxDepth(Head->Rchild);
+ 
+        if (lDepth > rDepth)
+            return (lDepth + 1);
+        else
+            return (rDepth + 1);
+    }
+}
+
+void BST :: mirror(PNODE Head)
+{
+    if (Head == NULL)
+        return;
+    else {
+        PNODE temp;
+ 
+        mirror(Head->Lchild);
+        mirror(Head->Rchild);
+ 
+        temp = Head->Lchild;
+        Head->Lchild = Head->Rchild;
+        Head->Rchild = temp;
+    }
+}
+
 int main()
 {
     PNODE First = NULL;
     bool bRet = false;
     int iValue = 0;
     int iChoice = 0;
+    int iRet = 0;
 
     BST bobj;
 
@@ -181,6 +274,12 @@ int main()
         cout<<"2 : PreOrder \n";
         cout<<"3 : Post Order \n";
         cout<<"4 : InOrder \n";
+        cout<<"5 : Delete Node \n";
+        cout<<"6 : Mirror \n";
+        cout<<"7 : Count Leaf Nodes \n";
+        cout<<"8 : Count Parent Nodes \n";
+        cout<<"9 : Max Height \n";
+        cout<<"10 : Search \n";
         cout<<"---------------------------------------- \n";
 
         cout<<"Enter Option : \n";
@@ -207,6 +306,42 @@ int main()
             case 4:
                 bobj.InOrder(First);
                 cout<<"\n";
+                break;
+
+            case 5:
+                cout<<"Enter the value u want to enter : \n";
+                cin>>iValue;
+                bobj.deleteNode(&First , iValue);
+                break;
+
+            case 6:
+                bobj.mirror(First);
+                break;
+
+            case 7:
+                bobj.CountLeafNodes(First);
+                break;
+
+            case 8:
+                bobj.CountParentNodes(First);
+                break;
+
+            case 9:
+                iRet = bobj.maxDepth(First);
+                cout<<iRet<<"\n";
+                break;
+
+            case 10:
+                cout<<"Enter the value u want to enter : \n";
+                cin>>iValue;
+                bRet = bobj.Search(First , iValue);
+                if(bRet == true){
+                    cout<<"Element present \n";
+                }
+                else
+                {
+                    cout<<"Element is absent \n";
+                }
                 break;
 
             default:
