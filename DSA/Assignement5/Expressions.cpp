@@ -73,8 +73,8 @@ class tree
 
 void tree :: inorder ( PNODE x )  
 {   
-    // if ( x == NULL )  
-    //     return ;  
+    if ( x == NULL )  
+        return ;  
 
     if(x != NULL)  
     {  
