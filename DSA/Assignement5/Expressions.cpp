@@ -73,8 +73,8 @@ class tree
 
 void tree :: inorder ( PNODE x )  
 {   
-    if ( x == NULL )  
-        return ;  
+    // if ( x == NULL )  
+    //     return ;  
 
     if(x != NULL)  
     {  
@@ -86,9 +86,9 @@ void tree :: inorder ( PNODE x )
 
 void tree :: preorder ( PNODE x )
 {
-    if ( x == NULL )  
-        return ;  
-    else   
+    // if ( x == NULL )  
+    //     return ;  
+    if(x != NULL)
     {  
         cout << x->info << " " ;  
         inorder ( x->l ) ;  
@@ -98,9 +98,9 @@ void tree :: preorder ( PNODE x )
 
 void tree :: postorder ( PNODE x )
 {
-    if ( x == NULL )  
-        return ;  
-    else   
+    // if ( x == NULL )  
+    //     return ;  
+    if(x != NULL)   
     {  
         inorder ( x->l ) ;  
         inorder ( x->r ) ;  
@@ -109,8 +109,10 @@ void tree :: postorder ( PNODE x )
 }
 
 int main()  
-{   
-    string str = "++A*BCD" ;  
+{  
+    string str = "" ;  
+    cout<<"Enter a postfix expression \n"; 
+    cin>>str;
 
     Stack sobj ;  
     tree tobj ;  

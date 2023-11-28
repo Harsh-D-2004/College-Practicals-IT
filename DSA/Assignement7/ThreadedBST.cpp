@@ -102,14 +102,17 @@ PNODE ThreadedBST :: InOrderSuccessor(PNODE ptr){
         return ptr -> rchild;
     }
 
-    ptr = ptr -> rchild;
-
-    if(ptr -> left == false){
+    else
+    {
+        ptr = ptr -> rchild;
+        
+        while(ptr -> left == false){
         ptr = ptr -> lchild;
-    }
+        }
 
     return ptr;
 
+    }
 }
 
 void ThreadedBST :: InOrder(PNODE Head){
@@ -139,21 +142,19 @@ void ThreadedBST :: PreOrder(PNODE Head)
     {
         cout<<curr -> data<<"\t";
 
-        if(curr->lchild!=NULL)
+        if(curr->left == false)
             curr=curr->lchild;
 
-        else if(curr->right==1)
+        else if(curr->right== true)
             curr=curr->rchild;
 
         else
         {
-            while(curr->rchild!=NULL && curr->right==0)      
+            while(curr != NULL && curr -> right == true)      
                 curr=curr->rchild;
 
-            if(curr->rchild == NULL)                           
-                break;
-            else
-                curr=curr->rchild;
+            if(curr != NULL)                           
+                curr = curr -> rchild;
         }
     }
 }
@@ -170,7 +171,7 @@ int main()
     {
         cout<<"--------------------------------------- \n";
         cout<<"1 : Insert Node \n";
-        cout<<"2 : PreOrder \n";
+        // cout<<"2 : PreOrder \n";
         cout<<"3 : InOrder \n";
         cout<<"4 : Exit \n";
         cout<<"---------------------------------------- \n";
