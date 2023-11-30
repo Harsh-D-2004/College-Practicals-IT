@@ -24,7 +24,17 @@ public class Main {
 
 			iAns = connum1 / connum2;
 
-				System.out.println("The division is : " + iAns);
+			System.out.println("The division is : " + iAns);
+			
+			int Arr[] = new int[4];
+			
+			System.out.println("Enter the elements : ");
+			
+			for(int i = 0 ; i < 6 ; i++) {
+				Arr[i] = sobj.nextInt();
+			}
+				
+				
 
 			}catch (ArithmeticException aobj) {
 
@@ -33,6 +43,10 @@ public class Main {
 			}catch(NumberFormatException nobj)
 			{
 				System.out.println("Number format exception occured ");
+
+			}catch(ArrayIndexOutOfBoundsException nobj)
+			{
+				System.out.println("ArrayIndexOutOfBoundsException occured  ");
 
 			}catch(Exception eobj)
 			{
