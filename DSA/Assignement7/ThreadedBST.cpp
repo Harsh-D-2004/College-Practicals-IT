@@ -1,167 +1,118 @@
-#include <iostream>
-using namespace std;
+#include<iostream> 
+using namespace std; 
+  
+struct Node 
+{ 
+    struct Node *left, *right; 
+    int info; 
 
-typedef struct Node
-{
+    bool lthread; 
 
-    struct Node *lchild;
-    int data;
-    struct Node *rchild;
+    bool rthread; 
+}; 
 
-    bool left;
-    bool right;
+class ThreadedBST{
 
-} NODE, *PNODE;
+    public:
 
-class ThreadedBST
-{
-public:
-    PNODE Insert(PNODE , int);
-    void InOrder(PNODE);
-    PNODE InOrderSuccessor(PNODE);
-    void PreOrder(PNODE);
+        struct Node * insert(struct Node * , int);
+        struct Node * inorderSuccessor(struct Node *);
+        void inorder(struct Node *);
 };
-
-PNODE ThreadedBST ::Insert(PNODE Head , int data)
-{
-
-    PNODE ptr = Head;
-    PNODE par = NULL;
-
-    while (ptr != NULL)
-    {
-
-        if (data == (ptr->data))
-        {
-
-            cout << "Duplicate key \n";
-            return Head;
-        }
-
-        par = ptr;
-
-        if (data < (ptr->data))
-        {
-
-            if (ptr->left == false)
-            {
-                ptr = ptr->lchild;
-            }
-
+  
+struct Node * ThreadedBST :: insert(struct Node *root, int ikey) 
+{ 
+    Node *ptr = root; 
+    Node *par = NULL; 
+    while (ptr != NULL) 
+    { 
+        if (ikey == (ptr->info)) 
+        { 
+            printf("Duplicate Key !\n"); 
+            return root; 
+        } 
+  
+        par = ptr; 
+  
+        if (ikey < ptr->info) 
+        { 
+            if (ptr -> lthread == false) 
+                ptr = ptr -> left; 
             else
-            {
-                break;
-            }
-        }
+                break; 
+        } 
+  
         else
-        {
-            if (ptr->right == false)
-            {
-                ptr = ptr->rchild;
-            }
-
+        { 
+            if (ptr->rthread == false) 
+                ptr = ptr -> right; 
             else
-            {
-                break;
-            }
-        }
-    }
-
-    PNODE newn = new NODE();
-    newn -> data = data;
-    newn -> right = true;
-    newn -> left = true;
-
-    if(par == NULL)
-    {
-        Head = newn;
-        newn ->lchild = NULL;
-        newn ->rchild = NULL;
-    }
-    else if(data < (par -> data))
-    {
-        newn -> lchild = par -> lchild;
-        newn -> rchild = par;
-        par -> left = false;
-        par -> lchild = newn;
-    }
+                break; 
+        } 
+    } 
+  
+    Node *tmp = new Node; 
+    tmp -> info = ikey; 
+    tmp -> lthread = true; 
+    tmp -> rthread = true; 
+  
+    if (par == NULL) 
+    { 
+        root = tmp; 
+        tmp -> left = NULL; 
+        tmp -> right = NULL; 
+    } 
+    else if (ikey < (par -> info)) 
+    { 
+        tmp -> left = par -> left; 
+        tmp -> right = par; 
+        par -> lthread = false; 
+        par -> left = tmp; 
+    } 
     else
-    {
-        newn -> rchild = par -> rchild;
-        newn -> lchild = par;
-        par -> right = false;
-        par -> rchild = newn;
-    }
+    { 
+        tmp -> left = par; 
+        tmp -> right = par -> right; 
+        par -> rthread = false; 
+        par -> right = tmp; 
+    } 
+  
+    return root; 
+} 
+  
+struct Node *  ThreadedBST:: inorderSuccessor(struct Node *ptr) 
+{ 
 
-    return Head;
-}
+    if (ptr -> rthread == true) 
+        return ptr->right; 
+  
 
-PNODE ThreadedBST :: InOrderSuccessor(PNODE ptr){
+    ptr = ptr -> right; 
+    while (ptr -> lthread == false) 
+        ptr = ptr -> left; 
+    return ptr; 
+} 
+   
+void ThreadedBST:: inorder(struct Node *root) 
+{ 
+    if (root == NULL) 
+        printf("Tree is empty"); 
+  
 
-    if(ptr -> right == true){
-        return ptr -> rchild;
-    }
+    struct Node *ptr = root; 
+    while (ptr -> lthread == false) 
+        ptr = ptr -> left; 
 
-    else
-    {
-        ptr = ptr -> rchild;
-        
-        while(ptr -> left == false){
-        ptr = ptr -> lchild;
-        }
-
-    return ptr;
-
-    }
-}
-
-void ThreadedBST :: InOrder(PNODE Head){
-
-    if(Head == NULL)
-    {
-        cout<<"Tree is empty \n";
-        return;
-    }
-    PNODE temp = Head;
-
-    while(temp -> left == false){
-        temp = temp -> lchild;
-    }
-
-    while(temp != NULL){
-        cout<<temp -> data<<"\t";
-        temp = InOrderSuccessor(temp);
-    }
-}
-
-void ThreadedBST :: PreOrder(PNODE Head)
-{
-    PNODE curr = Head;
-
-    while(curr!=NULL)
-    {
-        cout<<curr -> data<<"\t";
-
-        if(curr->left == false)
-            curr=curr->lchild;
-
-        else if(curr->right== true)
-            curr=curr->rchild;
-
-        else
-        {
-            while(curr != NULL && curr -> right == true)      
-                curr=curr->rchild;
-
-            if(curr != NULL)                           
-                curr = curr -> rchild;
-        }
-    }
-}
+    while (ptr != NULL) 
+    { 
+        printf("%d ",ptr -> info); 
+        ptr = inorderSuccessor(ptr); 
+    } 
+} 
 
 int main()
 {
-    PNODE Head = NULL;
+    struct Node *  Head = NULL;
     int iChoice = 0;
     int iValue;
 
@@ -184,16 +135,11 @@ int main()
             case 1:
                 cout<<"Enter the value u want to enter : \n";
                 cin>>iValue;
-                Head = bobj.Insert(Head , iValue);
-                break;
-
-            case 2:
-                bobj.PreOrder(Head);
-                cout<<"\n";
+                Head = bobj.insert(Head , iValue);
                 break;
 
             case 3:
-                bobj.InOrder(Head);
+                bobj.inorder(Head);
                 cout<<"\n";
                 break;
             
