@@ -1,284 +1,443 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-typedef class Node
+class Node 
 {
-    public:
-
+    public :
         char data;
         Node *next;
-
-        Node(int iValue)
-        {
-            data = iValue;
-            next = NULL;
-        }
-}NODE , *PNODE;
-
-class Stack
-{
-    private:    
-        PNODE First;
-        int iCount;
-    
-    public:
-        Stack();
-        void Push(char); //InsertLast
-        char Pop();      //DeleteLast
-        char TopElement();
-        void Display();
-        int Count();
-        int Precedence(char);
-        void InfixToPostfix(string);
-        char InfixToPrefix(string);
-        int isOperand(char);
-        bool isEmpty();
 };
 
-Stack :: Stack()
+class stack 
 {
-    First = NULL;
-    iCount = 0;
-}
+    public :
+        Node *head;
+        int count;
 
-void Stack :: Push(char cdata)     //Insertlast()
-{
-    PNODE newn = new NODE(cdata);
-    PNODE temp = NULL;
-    temp = First;
-
-    if(First == NULL)
-    {
-        First = newn;
-    }
-    else
-    {
-        while(temp -> next != NULL)
+        stack()
         {
-            temp = temp -> next;
+            head = NULL;
+            count = 0;
         }
-        temp -> next = newn;
-    }
-    iCount++;
-}
+        void push(char);
+        char pop();
+        char peek();
+        void display();
+        bool is_empty();
+        int icount();
 
-char Stack :: Pop()     //DeleteLast()
+};
+
+bool stack :: is_empty()
 {
-    PNODE temp = NULL;
-    char cValue = '\0';
-
-    if(First == NULL)
+    if(head == NULL)
     {
-        cout<<"Stack is empty \n";
-        return '\0';
-    }
-    else if(First -> next == NULL)
-    {
-        cValue = First -> data;
-        delete First;
+        return true;
     }
     else
     {
-        temp = First;
-
-        while(temp -> next -> next != NULL)
-        {
-            temp = temp -> next;
-        }
-        cValue = temp -> next -> data;
-        delete temp -> next;
-        temp -> next = NULL;
+        return false;
     }
-    iCount--;
-    return cValue;
 }
 
-void Stack :: Display()
+void stack :: push (char ch)
 {
-    if(First == NULL)
-    {
-        cout<<"Stack is empty \n";
-        return;
-    }
-
-    cout<<"Elements of stack are : \n";
-
-    PNODE temp = First;
-
-    for(int iCnt = 1 ; iCnt <= iCount ; iCnt++)
-    {
-        cout<<temp -> data<<"\n";
-        temp = temp -> next;
-    }
+    Node *temp, *New ;
+    New = new Node;
+    New -> data = ch;
+    New -> next = head;
+    head = New;
+    count++ ;
 }
 
-char Stack :: TopElement()
+char stack :: pop()
 {
-    if(First == NULL)
+    if (!is_empty())
     {
-        return '\0';
+       Node *temp;
+       temp = head;
+       char key = temp -> data;
+       head = head -> next;
+       delete temp;
+       count-- ;
+       return key;
     }
-    else
+
+    else 
     {
-        return First -> data;
-    }
-}
-
-int Stack :: Count()
-{
-    return iCount;
-}
-
-void Stack :: InfixToPostfix(string InfixExp)
-{   
-    Stack obj;
-
-    string PostfixExp = new char(sizeof(InfixExp));
-    int i = 0 , j = 0;
-
-    for(i = 0 ; i < InfixExp.length() ; )
-    {
-        if(!isOperand(InfixExp[i]))
-        {
-            PostfixExp[j] = InfixExp[i];
-            i++;
-            j++;
-        }
-        else if(isOperand(InfixExp[i]))
-        {   
-            if(Precedence(InfixExp[i]) > Precedence(obj.TopElement()) || obj.First == NULL)
-            {
-                obj.Push(InfixExp[i]);
-                i++;
-            }
-            else
-            {
-                PostfixExp[j] = obj.Pop();
-                j++;
-            }
-        }
-
-    }
-    cout<<PostfixExp<<"\n";
-    while(obj.iCount != 0)
-    {   
-        char c = obj.Pop();
-        PostfixExp[j] = c;
-        j++;
-    }
-    cout<<PostfixExp<<"\n";
-}
-
-int Stack :: Precedence(char cValue)
-{
-    if(cValue == '*' || cValue == '/')
-    {
-        return 3;
-    }
-    else if(cValue == '+' || cValue == '-')
-    {
-        return 2;
-    }
-    else
-    {
+        cout << "The stack is empty";
         return 0;
     }
 }
 
-bool Stack :: isEmpty()
+char stack :: peek()
 {
-    if(First == NULL)
+    if(!is_empty())
     {
-        return 1;
+        return head -> data;
     }
-    return 0;
+    return '\0';
 }
 
-int Stack :: isOperand(char cValue)
+void stack :: display()
 {
-    if(cValue == '+' || cValue == '/' || cValue == '-' || cValue == '*')
+    Node * temp;
+    temp = head;
+    if (is_empty())
+    {
+        cout << "The stack is empty.";
+    }
+    else 
+    {
+        do
+        {
+            cout << temp -> data <<"\t";
+            temp = temp -> next;
+        }
+        while (temp -> next != NULL);
+    }
+}
+
+int stack :: icount()
+{
+    return count;
+}
+
+class expression
+{
+    public :
+        string infix;
+        string prefix = "";
+        string postfix = "";
+        stack st;
+
+        int priority(char);
+        string InfixPostfix(string);
+        string InfixPrefix(string);
+        string reverseStr (string);
+        int EvaluatePostfix(string);
+        int EvaluatePrefix(string);
+        void displayExp(char);
+        bool is_operator(char);
+        bool is_operand(char);
+};
+
+bool expression :: is_operator(char ch)
+{
+    if( ch == '*' || ch == '/' || ch == '+' || ch == '-' )
+    {
+        return true;
+    }     
+    else
+    {
+        return false;
+    }
+    
+}
+
+bool expression :: is_operand (char ch)
+{
+    if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'))
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+}
+
+int expression :: priority(char ch)
+{
+    if (ch == '^')
+    {
+        return 3;
+    }
+    
+    else if (ch == '*'|| ch == '/')
+    {
+        return 2;
+    }
+
+    else if (ch == '+' || ch == '-')
     {
         return 1;
     }
-    return 0;
+    return -1;
 }
+
+string expression :: InfixPostfix(string infix)
+{
+    for (int i = 0; i < infix.length(); i++)
+    {
+        char c = infix[i];
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+        {
+            postfix = postfix + c;
+        }
+
+        else if(c == '(')
+        {
+            st.push(c);
+        }
+
+        else if(c == ')')
+        {
+            while(!st.is_empty() && st.peek() != '(')
+            {
+                postfix = postfix + st.pop();
+            }     
+            if (!st.is_empty() && st.peek() == '(')
+            {
+                st.pop();
+            }
+        }
+
+        else
+        {
+            while (!st.is_empty() && priority(c) <= priority(st.peek()) )
+            {                    
+                postfix = postfix + st.pop();
+            }
+            st.push(c);
+        }
+    }
+
+    while (!st.is_empty())
+    {
+        postfix = postfix + st.pop();
+    }
+    cout << "\n";
+    cout << "The post fix expression is " << postfix;
+    cout << "\n";
+    return postfix;
+}
+string expression :: reverseStr(string str)
+{
+    string reversed;
+    for (int i = str.length() - 1; i >= 0 ; i--)
+    {
+        if(str[i] == '(')
+        {
+            str[i] = ')';
+        }
+        else if(str[i] == ')')
+        {
+            str[i] = '(';
+        }
+        
+        reversed += str[i];
+    }
+    return reversed;
+}
+
+string expression :: InfixPrefix (string infix)
+{
+    string revInfix = reverseStr(infix);
+    string tempPrefix;
+
+    for (int i = 0; i < infix.length(); i++)
+    {
+        char c = revInfix[i];
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+        {
+            tempPrefix = tempPrefix + c;
+        }
+
+        else if(c == '(')
+        {
+            st.push(c);
+        }
+
+        else if(c == ')')
+        {
+            while(!st.is_empty() && st.peek() != '(')
+            {
+                tempPrefix = tempPrefix + st.pop();
+            }     
+            if (!st.is_empty() && st.peek() == '(')
+            {
+                st.pop();
+            }
+        }
+
+        else
+        {
+            while (!st.is_empty() && priority(c) <= priority(st.peek()) )
+            {                    
+                tempPrefix = tempPrefix + st.pop();
+            }
+            st.push(c);
+        }
+    }
+
+    while (!st.is_empty())
+    {
+        tempPrefix = tempPrefix + st.pop();
+    }
+
+    prefix = reverseStr(tempPrefix);
+    cout << "\n";
+    cout << "The pre fix expression is " << prefix;
+    cout << "\n";
+    return prefix;
+}
+
+int expression :: EvaluatePostfix (string postfix)
+{   
+    string evaluate;
+    for(int i = 0 ; i < postfix.length() ; i++)
+    {
+        char c = postfix[i];
+        if ( is_operand(c))
+        {   
+            int val;
+            cout << "enter the value of expression "<< c << " : \t" ;
+            cin >> val;
+            st.push(val);
+        }
+        else if(is_operator(c))
+        {
+            int a = st.pop();
+            int b = st.pop();
+
+            switch(c)
+            {
+                case '+' :
+                    st.push(a + b);
+                    break;
+
+                case '-' :
+                    st.push(b - a);
+                    break;
+
+                case '*' :
+                    st.push(a * b);   
+                    break;
+
+                case '/' :
+                    st.push(b / a);
+                    break;
+
+               /* case '^' :
+                    st.push(pow(b , a));
+                    break;
+                */    
+
+                default  : 
+                    cout << "invalid input. ";            
+            }
+        }
+    } 
+    int ans = st.pop();
+    cout << "The evaluation of the given expression is :" << ans;
+    return ans;
+}
+
+int expression :: EvaluatePrefix(string prefix)
+{
+    string RevPrefix = reverseStr(prefix);
+    
+    for (int i = prefix.length() - 1 ; i >= 0 ; i -- )
+    {
+        
+        char c = prefix[i];
+        
+        if(is_operand(c))
+        {
+            int val;
+            cout << "Enter the vakue of expression " << c << " : ";
+            cin >> val;
+            st.push(val);
+        }
+        else if(is_operator(c))
+        {
+            int a = st.pop();
+            int b = st.pop();
+
+            switch(c)
+            {
+                /*case '^' :
+                    st.push(pow(b , a));
+                    break;
+                */    
+                
+                case '*' :
+                    st.push(a * b);
+                    break;
+
+                case '/' :
+                    st.push(b / a);
+                    break;
+
+                case '+' : 
+                    st.push(a + b);
+                    break;
+
+                case '-' :
+                    st.push(b - a);
+                    break;
+
+                default :
+                    cout << "invlaid input " << endl;   
+                    break;             
+            }
+
+        }   
+
+    }
+    int ans = st.pop();
+    cout << "The Evaluated expression is :" << ans << "\n ";
+    return ans;
+
+}
+
 
 int main()
 {
-    Stack obj;
-    
-    int iChoice = 1;
-    char cValue = 0;
-    char cRet = '\0';
-    string InfixExp = "((x+(y*z))-w)";
+    expression sobj;
+    int choice = -1;
+    string infix;
+    cout << "Enter the expression for conversion: ";
+    cin >> infix;
 
-    // cout<<"-----------------------------------------------\n";
-    // cout<<"Dynamic implementation of stack \n";
-    // cout<<"-----------------------------------------------\n";
+    while (true)
+    {
+        cout << endl
+             << endl
+             << "Stack Menu" << endl;
+        cout << "1. Convert Infix to Postfix" << endl;
+        cout << "2. Evaluate postfix." << endl;
+        cout << "3. Convert Infix to Prefix" << endl;
+        cout << "4. Evaluate Prefix."<< endl ;
+        cout << "5. Exit" << endl;
+        cin >> choice;
 
-    // while(iChoice != 0)
-    // {
-    //     cout<<"-----------------------------------------------\n";
+        switch(choice)
+        {
+            case 1 :
+                sobj.InfixPostfix(infix);
+                break;
 
-    //     cout<<"Please enetr the option : \n";
-
-    //     cout<<"1 : Push element into stack\n";
-    //     cout<<"2 : Pop element from stack\n";
-    //     cout<<"3 : Display elements from stack\n";
-    //     cout<<"4 : Count elements from stack\n";
-    //     cout<<"5 : Show top element from stack\n";
-    //     cout<<"6 : Convert Infix to PostFix\n";
-    //     cout<<"0 : Terminate the application\n";
-
-    //     cout<<"-----------------------------------------------\n";
-
-    //     cout<<"Please enter the option : \n";
-    //     cin>>iChoice;
-
-    //     switch(iChoice)
-    //     {
-    //         case 1:
-    //             cout<<"Enter the element that you want to push : \n";
-    //             cin>>cValue;
-    //             obj.Push(cValue);
-    //             break;
+            case 2 :
+                sobj.EvaluatePostfix(sobj.postfix);
+                break;
             
-    //         case 2:
-    //             cRet = obj.Pop();
-    //             if(cRet != '\0')
-    //             {
-    //                 cout<<"Popped element from stack is : "<<cRet<<"\n";
-    //             }
-    //             break;
+            case 3 :
+                sobj.InfixPrefix(infix);
+                break;
 
-    //         case 3:
-    //             obj.Display();
-    //             break;
-            
-    //         case 4:
-    //             cout<<"The number of elements is : "<<obj.Count()<<"\n";
-    //             break;
+            case 4 :
+                sobj.EvaluatePrefix(sobj.prefix);
+                break;
 
-    //         case 5:
-    //             cout<<"The top element is : "<<obj.TopElement()<<"\n";
-    //             break;
+            case 5 :
+                return 0;
 
-    //         case 6:
-    //             // InfixExp = "((x+(y*z))-w)";
-    //             obj.InfixToPostfix(InfixExp);
-    //             break;
-            
-    //         case 0:
-    //             cout<<"Thankyou for using application \n";
-    //             break;
+            default :
+                cout << "Invalid input.....";
+                break;        
 
-    //         default:
-    //             cout<<"Enter valid option \n";
-    //             break;
-    //     }
-    // }
-
-    obj.InfixToPostfix(InfixExp);
-
-    return 0;
+        }
+    }
 }
