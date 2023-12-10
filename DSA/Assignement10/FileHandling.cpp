@@ -17,6 +17,7 @@ public:
     friend ifstream &operator>>(ifstream &ifs, Student &s);
     friend ostream &operator<<(ostream &os, Student &s);
     friend istream &operator>>(istream &is, Student &s);
+    
     static void Create();
     static void Display();
     static void Add();

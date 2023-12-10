@@ -328,7 +328,7 @@ int main()
             break;
 
         case 6:
-            cout<<"Exiting the application................\n"
+            cout<<"Exiting the application................\n";
             return 0;
 
         default:

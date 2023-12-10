@@ -117,7 +117,6 @@ class expression
         string reverseStr (string);
         int EvaluatePostfix(string);
         int EvaluatePrefix(string);
-        void displayExp(char);
         bool is_operator(char);
         bool is_operand(char);
 };
@@ -195,7 +194,7 @@ string expression :: InfixPostfix(string infix)
 
         else
         {
-            while (!st.is_empty() && priority(c) <= priority(st.peek()) )
+            while (!st.is_empty() && priority(c) <= priority(st.peek()))
             {                    
                 postfix = postfix + st.pop();
             }
