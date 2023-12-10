@@ -1,203 +1,97 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-struct Queue
-{
-    int backindex;
-    int frontindex;
-    int iSize;
-    int iCount;
-    int Arr[];
-};
+int cqueue[5];
+int front = -1, rear = -1, n=5;
 
-class CircularQueue
-{   private:
-        struct Queue pobj;
-
-    public:
-
-        CircularQueue(int ilen)
-        {
-            pobj.backindex = 0;
-            pobj.frontindex = 0;
-            pobj.iSize = ilen;
-            pobj.iCount = 0;
-            pobj.Arr[pobj.iSize];
-        }
-
-        bool isFull();
-        bool isEmpty();
-        void Enqueue(int);
-        int Dequeue();
-        void Display();
-        void Count();
-};
-
-bool CircularQueue :: isFull()
-{
-    if(((pobj.backindex + 1) % (pobj.iSize) )== pobj.frontindex)
-    {
-        return true;
-    }
-
-    return false;
+void insertCQ(int val) {
+   if ((front == 0 && rear == n-1) || (front == rear+1)) {
+      cout<<"Queue Overflow \n";
+      return;
+   }
+   if (front == -1) {
+      front = 0;
+      rear = 0;
+   } else {
+      if (rear == n - 1)
+      rear = 0;
+      else
+      rear = rear + 1;
+   }
+   cqueue[rear] = val ;
 }
+void deleteCQ() {
+   if (front == -1) {
+      cout<<"Queue Underflow\n";
+      return ;
+   }
+   cout<<"Element deleted from queue is : "<<cqueue[front]<<endl;
 
-bool CircularQueue :: isEmpty()
-{
-    if(pobj.backindex == pobj.frontindex)
-    {
-        return true;
-    }
-
-    return false;
+   if (front == rear) {
+      front = -1;
+      rear = -1;
+   } else {
+      if (front == n - 1)
+      front = 0;
+      else
+      front = front + 1;
+   }
 }
-
-void CircularQueue :: Enqueue(int iValue)
-{	
-	int i = 0;
-	
-	if(isFull() == true)
-	{
-		   cout<<"Queue Overflow \n";
-		   return;
-	}
-	else
-	{
-		   pobj.backindex = ((pobj.backindex) + 1 % (pobj.iSize));
-		   pobj.Arr[pobj.backindex] = iValue;
-		   pobj.iCount++;
-	}
-    
+void displayCQ() {
+   int f = front, r = rear;
+   if (front == -1) {
+      cout<<"Queue is empty"<<endl;
+      return;
+   }
+   cout<<"Queue elements are :\n";
+   if (f <= r) {
+      while (f <= r){
+         cout<<cqueue[f]<<" ";
+         f++;
+      }
+   } else {
+      while (f <= n - 1) {
+         cout<<cqueue[f]<<" ";
+         f++;
+      }
+      f = 0;
+      while (f <= r) {
+         cout<<cqueue[f]<<" ";
+         f++;
+      }
+   }
+   cout<<endl;
 }
+int main() {
 
-int CircularQueue :: Dequeue()
-{   
-    int iRet = 0;
+   int ch, val;
+   cout<<"1)Insert\n";
+   cout<<"2)Delete\n";
+   cout<<"3)Display\n";
+   cout<<"4)Exit\n";
+   do {
+      cout<<"Enter choice : "<<endl;
+      cin>>ch;
+      switch(ch) {
+         case 1:
+         cout<<"Input for insertion: "<<endl;
+         cin>>val;
+         insertCQ(val);
+         break;
 
-    if(isEmpty() == true)
-    {
-        cout<<"Queue is Empty \n";
-        return -1;
-    }
-    else
-    {
-        pobj.frontindex = ((pobj.frontindex) + 1 % (pobj.iSize));
-        iRet = pobj.Arr[pobj.frontindex];
-        pobj.Arr[pobj.frontindex] = -1;
-        pobj.iCount--;
-    }
+         case 2:
+         deleteCQ();
+         break;
 
-    return iRet;
-}
+         case 3:
+         displayCQ();
+         break;
 
-void CircularQueue :: Display()
-{	
-	if(isEmpty() == true)
-	{
-		cout<<"The Queue is empty \n";
-		return;
-	}
-
-    for(int i = pobj.frontindex ; i != pobj.backindex ; i = (i + 1) % pobj.iSize)
-    {
-        cout<<pobj.Arr[i]<<"\t";
-    }
-    cout<<"\n";
-}
-
-void CircularQueue :: Count()
-{
-    cout << "The number of elements are : " <<pobj.iCount<<"\n";
-}
-
-
-int main()
-{   
-    int iLen = 0;
-    int iChoice = 0;
-    int iValue = 0;
-    int iRet = 0;
-    bool bRet = 0;
-
-    cout<<"Enter the size of array : \n";
-    cin>>iLen;
-
-    CircularQueue cobj(4);
-    
-    while(1)
-    {
-    	cout<<"----------------------------------------------------- \n";
-    	cout<<"1 : Enqueue \n";
-    	cout<<"2 : Dequeue \n";
-    	cout<<"3 : isEmpty \n";
-    	cout<<"4 : isFull \n";
-    	cout<<"5 : Display \n";
-    	cout<<"6 : Count \n";
-    	cout<<"7 : Exit \n";
-    	cout<<"----------------------------------------------------- \n";
-    	
-    	cout<<"Enter the choice \n";
-    	cin>>iChoice;
-    	
-    	switch(iChoice)
-    	{
-    		case 1:
-    				cout<<"Enter the value u want to enter : \n";
-    				cin>>iValue;
-    				cobj.Enqueue(iValue);
-    				break;
-    				
-    		case 2:
-    				iRet = cobj.Dequeue();
-    				if(iRet == -1)
-    				{
-    					cout<<"The Queue is empty \n";
-    				}
-    				cout<<"The Dequeued element is : "<<iRet<<"\n";
-    				break;
-    				
-    		case 3:
-    				bRet = cobj.isEmpty();
-    				if(bRet == true)
-    				{
-    					cout<<"The queue is empty \n";
-    				}
-    				else
-    				{
-    					cout<<"The queue is not empty \n";
-    				}
-    				break;
-    				
-    		case 4:
-    				bRet = cobj.isFull();
-    				if(bRet == true)
-    				{
-    					cout<<"The queue is full \n";
-    				}
-    				else
-    				{
-    					cout<<"The queue is not full \n";
-    				}
-    				break;
-    				
-    		case 5:
-    				cobj.Display();
-    				break; 
-    				
-    		case 6:
-    				cobj.Count();
-    				break;
-    				
-    		case 7:
-    				cout<<"Exiting the application.... \n";
-    				return 0;
-    				
-    		default:
-    				cout<<"Invalid Choice \n";
-    				break;
-    	}
-    }
-
-    return 0;
+         case 4:
+         cout<<"Exit\n";
+         break;
+         default: cout<<"Incorrect!\n";
+      }
+   } while(ch != 4);
+   return 0;
 }
