@@ -33,26 +33,26 @@ public class Main {
 			for(int i = 0 ; i < 6 ; i++) {
 				Arr[i] = sobj.nextInt();
 			}
-				
-				
 
 			}catch (ArithmeticException aobj) {
 
 				System.out.println("Arithmetic Exception occured ");
 
-			}catch(NumberFormatException nobj)
+			}
+			catch(NumberFormatException nobj)
 			{
 				System.out.println("Number format exception occured ");
 
-			}catch(ArrayIndexOutOfBoundsException nobj)
+			}
+			catch(ArrayIndexOutOfBoundsException nobj)
 			{
 				System.out.println("ArrayIndexOutOfBoundsException occured  ");
 
-			}catch(Exception eobj)
+			}
+			catch(Exception eobj)
 			{
 				eobj.printStackTrace();
 			}
-
 	}
 
 }
