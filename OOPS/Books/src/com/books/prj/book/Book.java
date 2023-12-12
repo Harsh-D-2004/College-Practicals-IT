@@ -40,7 +40,7 @@ public class Book extends Publication{
 	@Override
 	public void saleCopy()
 	{
-		bookSell = this.copies * this.copies;
+		bookSell = this.copies * (int)this.price;
 		totalbooksell = totalbooksell + bookSell;
 		totalprice += totalbooksell;
         System.out.print("\n");

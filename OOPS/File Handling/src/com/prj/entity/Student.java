@@ -27,7 +27,7 @@ public class Student {
 	}
 	
 	public String displayData() {
-		return "id : " + id + "	name : " + name + "	domain : " + domain + "	year : " + year;
+		return "id : " + id + "	name : " + name + "	domain : " + domain + "	year : " + year + "\n";
 	}
 	
 }

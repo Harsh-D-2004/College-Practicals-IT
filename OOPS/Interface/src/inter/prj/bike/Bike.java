@@ -49,8 +49,7 @@ public class Bike implements Vehicle{
 			{
 				System.out.println("Error");
 				speed = speed - a;
-			}
-			
+			}	
 		}
 		else
 		{

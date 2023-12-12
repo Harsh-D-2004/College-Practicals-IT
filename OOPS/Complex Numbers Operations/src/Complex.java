@@ -59,7 +59,7 @@ public class Complex{
 	
 	public void Division()
 	{
-		int Denom = (Real2 * Real2) + (Imaginary2 * Imaginary2);
+		int Denom = (Real1 * Real2) + (Imaginary1 * Imaginary2);
 		
 		if(Denom == 0)
 		{

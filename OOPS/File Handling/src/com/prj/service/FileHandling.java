@@ -51,7 +51,7 @@ public class FileHandling {
 	    
 	        fwrite.close();   
 	        
-	        System.out.println("Content is successfully wrote to the file.");  
+	        System.out.println("Content is successfully written to the file.");  
 	        
 	    } catch (IOException e) {  
 	    	
@@ -95,7 +95,83 @@ public class FileHandling {
 	}
 	
 	public void updateDatabase() {
-		
+
+		try {  
+	    	
+	    	Student obj = new Student();
+	    	obj.getData();
+	    	
+	        FileWriter fwrite = new FileWriter(fileName , true);  
+
+	        fwrite.write(obj.displayData());   
+	    
+	        fwrite.close();   
+	        
+	        System.out.println("Content is successfully updated in the file.");  
+	        
+	    }catch (IOException e) {  
+	    	
+	        System.out.println("Unexpected error occurred");  
+	        e.printStackTrace();  
+	        
+	        }  
+	}
+
+	public void searchDatabase(String id)
+	{
+		try {  
+
+            File f1 = new File(fileName);    
+            
+            Scanner dataReader = new Scanner(f1);  
+            
+            while (dataReader.hasNextLine()) {  
+                String fileData = dataReader.nextLine();  
+
+				if(fileData.contains(id))
+				{
+					System.out.println(fileData);  
+				}
+            } 
+            
+            dataReader.close();  
+        } catch (FileNotFoundException exception) {  
+            System.out.println("Unexcpected error occurred!");  
+            exception.printStackTrace();  
+        }
+	}
+
+	public void deleteRecord(String id)
+	{
+		try {  
+
+            File f1 = new File(fileName);    
+            
+            Scanner dataReader = new Scanner(f1); 
+			
+			FileWriter fwrite = new FileWriter(fileName , true);  
+            
+            while (dataReader.hasNextLine()) {  
+
+				String fileData = dataReader.nextLine();
+
+				if(fileData.contains(id))
+				{
+					fwrite.write("");   
+				}
+            } 
+			fwrite.close();
+	        System.out.println("Content is successfully written to the file.");  
+            
+        dataReader.close();  
+        } catch (FileNotFoundException exception) {  
+            System.out.println("Unexcpected error occurred!");  
+            exception.printStackTrace();  
+        }catch(IOException eobj)
+		{	
+			System.out.println("Unexcpected error occurred!");  
+			eobj.printStackTrace();
+		}
 	}
 	
 	
