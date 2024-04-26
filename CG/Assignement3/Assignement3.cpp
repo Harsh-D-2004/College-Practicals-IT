@@ -1,247 +1,398 @@
-#include <stdio.h>
 #include<iostream>
-#include <math.h>
-#include <GL/glut.h>
-
-int xc = 320, yc = 240;
-#define h  1000
-#define w  1000
-
-int screenWidth = 1000;
-int screenHeight = 1000;
-bool showAxes = true;
+#include<GL/gl.h>
+#include<GL/glu.h>
+#include<cmath>
+#include<GL/glut.h>
 
 using namespace std;
 
-void plot_point(int x, int y)
+#define w  1000
+#define h  1000
+
+int r = 10;
+int x1 = -1;
+int x = 0;
+int y = r;
+int ya, x2, y2, button;
+int H = 0; int K = 0;
+
+void menu (int index)
 {
-  glBegin(GL_POINTS);
-  glVertex2i(xc+x, yc+y);
-  glVertex2i(xc+x, yc-y);
-  glVertex2i(xc+y, yc+x);
-  glVertex2i(xc+y, yc-x);
-  glVertex2i(xc-x, yc-y);
-  glVertex2i(xc-y, yc-x);
-  glVertex2i(xc-x, yc+y);
-  glVertex2i(xc-y, yc+x);
-  glEnd();
+	button = index;
+	glutPostRedisplay();
 }
 
-void plot_point_olympic(int x, int y , int c1 , int c2)
-{
-  glBegin(GL_POINTS);
-  glVertex2i(c1+x, c2+y);
-  glVertex2i(c1+x, c2-y);
-  glVertex2i(c1+y, c2+x);
-  glVertex2i(c1+y, c2-x);
-  glVertex2i(c1-x, c2-y);
-  glVertex2i(c1-y, c2-x);
-  glVertex2i(c1-x, c2+y);
-  glVertex2i(c1-y, c2+x);
-  glEnd();
-}
-
-void bresenham_circle(int r)
-{
-  int x=0,y=r;
-  float pk=(5.0/4.0)-r;
-
-  plot_point(x,y);
-  int k;
-  while(x < y)
-  {
-    x = x + 1;
-    if(pk < 0)
-      pk = pk + 2*x+1;
-    else
-    {
-      y = y - 1;
-      pk = pk + 2*(x - y) + 1;
-    }
-    plot_point(x,y);
-  }
-  glFlush();
-}
-
-void concentric_circles(void)
-{
-  glClear(GL_COLOR_BUFFER_BIT);
-
-  int radius1 = 100, radius2 = 200;
-  bresenham_circle(radius1);
-  bresenham_circle(radius2);
-}
-
-void bresenham_circle_olympic(int r , int c1 , int c2)
-{
-  int x=0,y=r;
-  float pk=(5.0/4.0)-r;
-
-  plot_point_olympic(x,y,c1,c2);
-  int k;
-  while(x < y)
-  {
-    x = x + 1;
-    if(pk < 0)
-      pk = pk + 2*x+1;
-    else
-    {
-      y = y - 1;
-      pk = pk + 2*(x - y) + 1;
-    }
-    plot_point_olympic(x,y,c1,c2);
-  }
-  glFlush();
-}
-
-void bresenham_spiral(int num_turns, int num_points)
-{
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    float theta = 0.0;
-    float delta_theta = 2 * M_PI / num_points;
-    int radius = 10;
-    
-    for(int loop = 0 ; loop < num_turns ; ++loop)
-    {
-    	    for (int i = 0; i < num_points; ++i)
-	    {
-		int x = radius * cos(theta);
-		int y = radius * sin(theta);
-
-		bresenham_circle(x);
-		theta += delta_theta;
-	    }
-	    radius += 10 + 10;
-    }
-    
-
-    glFlush();
-}
-
-void put_pixel(int x, int y)
+void plot (int x, int y)
 {
 	glBegin(GL_POINTS);
-		glVertex2i(x,y);
+		glVertex2i(x , y);
 	glEnd();
+	glFlush();
 }
 
-void axes()
-{   if(showAxes)
-    {
-    	for(int i= -h ;i <=h;i++)
+void axis()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	for (int i = -h; i <= h; i++)
 	{
-		put_pixel(i,0);
-		put_pixel(0,i);
-        }
-    }
+		plot(i, 0);    //Plot X-Axis
+		plot(0, i);    //Plot Y-Axis
+	}
+	glFlush();
+}
+
+void CircleWithAxis(int x1, int ya, int x2, int y2)
+{
+    //glClear(GL_COLOR_BUFFER_BIT);
+    int H = x1;
+	int K = ya;
+	
+	int r = abs(sqrt(((x2-x1)*(x2-x1)+(y2-ya)*(y2-ya))));
+	
+	int d = 3-(2*r);
+	
+	x = 0;
+	y = r;
+	
+	while (x < y)
+	{	
+		if (d <= 0)
+		{
+			d = d+4*x+6;
+			x += 1;
+		}
+		else
+		{
+			d = d+4*(x-y)+10;
+			x += 1;
+			y -= 1;
+		}
+		
+		plot (x+H, y+K);
+		plot (-x+H, -y+K);
+		
+		plot (y+H, x+K);
+		plot (-y+H, -x+K);
+		
+		plot (-y+H, x+K);
+		plot (y+H, -x+K);
+		
+		plot (-x+H, y+K);
+		plot (x+H, -y+K);
+	}
+	for (int i = -h; i <= h; i++)
+	{
+		plot(i, 0);    //Plot X-Axis
+		plot(0, i);    //Plot Y-Axis
+	}
+    //glFlush();
+}
+
+void OlympicRing()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
     
+	int r = 100;
+	int H = -190;
+	int K = 50;
+	
+	int d = 3-(2*r);
+	
+	x = 0;
+	y = r;
+	
+	while (x < y)
+	{	
+		if (d <= 0)
+		{
+			d = d+4*x+6;
+			x += 1;
+		}
+		else
+		{
+			d = d+4*(x-y)+10;
+			x += 1;
+			y -= 1;
+		}
+		
+		plot (x+H, y+K);
+		plot (-x+H, -y+K);
+		
+		plot (y+H, x+K);
+		plot (-y+H, -x+K);
+		
+		plot (-y+H, x+K);
+		plot (y+H, -x+K);
+		
+		plot (-x+H, y+K);
+		plot (x+H, -y+K);
+		
+		
+		plot (x+H+2*r, y+K);
+		plot (-x+H+2*r, -y+K);
+		
+		plot (y+H+2*r, x+K);
+		plot (-y+H+2*r, -x+K);
+		
+		plot (-y+H+2*r, x+K);
+		plot (y+H+2*r, -x+K);
+		
+		plot (-x+H+2*r, y+K);
+		plot (x+H+2*r, -y+K);
+		
+		
+		plot (x+H+4*r, y+K);
+		plot (-x+H+4*r, -y+K);
+		
+		plot (y+H+4*r, x+K);
+		plot (-y+H+4*r, -x+K);
+		
+		plot (-y+H+4*r, x+K);
+		plot (y+H+4*r, -x+K);
+		
+		plot (-x+H+4*r, y+K);
+		plot (x+H+4*r, -y+K);
+		
+		
+		plot (x+H+r, y+K-r);
+		plot (-x+H+r, -y+K-r);
+		
+		plot (y+H+r, x+K-r);
+		plot (-y+H+r, -x+K-r);
+		
+		plot (-y+H+r, x+K-r);
+		plot (y+H+r, -x+K-r);
+		
+		plot (-x+H+r, y+K-r);
+		plot (x+H+r, -y+K-r);
+		
+		
+		plot (x+H+3*r, y+K-r);
+		plot (-x+H+3*r, -y+K-r);
+		
+		plot (y+H+3*r, x+K-r);
+		plot (-y+H+3*r, -x+K-r);
+		
+		plot (-y+H+3*r, x+K-r);
+		plot (y+H+3*r, -x+K-r);
+		
+		plot (-x+H+3*r, y+K-r);
+		plot (x+H+3*r, -y+K-r);
+	}
+    glFlush();
 }
 
-void myMouse(int button , int state , int x , int y)
+void ConcentricCircle(int x1, int ya, int x2, int y2)
 {
-    if (state == GLUT_DOWN)
-    {
-        if (button == GLUT_LEFT_BUTTON)
-        {
-            std::cout << "Left button clicked at coordinates: (" << x << ", " << screenHeight - y << ")" << std::endl;
-	    showAxes = !showAxes;
-            glutPostRedisplay();
-        }
-        else if (button == GLUT_RIGHT_BUTTON)
-        {
-            std::cout << "Right button clicked at coordinates: (" << x << ", " << screenHeight - y << ")" << std::endl;
-            glutAttachMenu(GLUT_RIGHT_BUTTON);
-            glutPostRedisplay();
-        }
-    }
+	glClear(GL_COLOR_BUFFER_BIT);
+    
+	int H = x1;
+	int K = ya;
+	int r, n, drc;
+	r = abs(sqrt(((x2-x1)*(x2-x1)+(y2-ya)*(y2-ya))));
+	cout<<"Enter number of concentric circles: ";
+	cin>>n;
+	cout<<"Radius Decrement:";
+	cin>>drc;
+	
+	int d = 3-(2*r);
+	
+	for(int i = 0; i < n; i++)
+	{
+		x = 0;
+		y = r;
+		
+		while (x < y)
+		{	
+			if (d <= 0)
+			{
+				d = d+4*x+6;
+				x += 1;
+			}
+			else
+			{
+				d = d+4*(x-y)+10;
+				x += 1;
+				y -= 1;
+			}
+			
+			plot (x+H, y+K);
+			plot (-x+H, -y+K);
+			
+			plot (y+H, x+K);
+			plot (-y+H, -x+K);
+			
+			plot (-y+H, x+K);
+			plot (y+H, -x+K);
+			
+			plot (-x+H, y+K);
+			plot (x+H, -y+K);
+		}
+		for (int i = -h; i <= h; i++)
+		{
+			plot(i, 0);    //Plot X-Axis
+			plot(0, i);    //Plot Y-Axis
+		}
+	    glFlush();
+	    r -= drc;
+	}
 }
 
-void drawScene(int option)
+void UpperHalf()
 {	
-	int rad = 50;
-	float spacing = 2.5 * rad;
-	
-    if(showAxes)
-    {
-    	axes();
-    }
-	
-    switch (option)
-    {
-    case 1: // Circle
-        glBegin(GL_POINTS);
-        bresenham_circle(100);
-        glEnd();
-        glFlush();
-        break;
-    case 2: // Concentric Circles
-        glBegin(GL_POINTS);
-		concentric_circles();
-        glEnd();
-        glFlush();
-        break;
-    case 3: // olympic circles
-        glBegin(GL_POINTS);
-        rad = 50;
-		bresenham_circle_olympic(rad , xc , yc);
-		bresenham_circle_olympic(rad , xc+spacing , yc);
-		bresenham_circle_olympic(rad , xc+2*spacing , yc);
-		bresenham_circle_olympic(rad , xc+0.5*spacing , yc-1.5*rad);
-		bresenham_circle_olympic(rad , xc+1.5*spacing , yc-1.5*rad);
-        glEnd();
-        glFlush();
-        break;
-        
-     case 4:
-     	glBegin(GL_POINTS);
-     		bresenham_spiral(5 , 100);
-     	glEnd();
-        glFlush();
-     	break;
-     		
-     	
-    default:
-        break;
-    }
+	int d = 3 - 2 * r;
+    int x = 0;
+    int y = r;
+	while (x < y)
+	{	
+		plot (x+H, y+K);
+		plot (y+H, x+K);			
+		plot (-y+H, x+K);			
+		plot (-x+H, y+K);
+		
+		if (d <= 0)
+		{
+			d = d+4*x+6;
+			x += 1;
+		}
+		else
+		{
+			d = d+4*(x-y)+10;
+			x += 1;
+			y -= 1;
+		}
+	}
+}
+
+void LowerHalf()
+{
+	int d = 3 - 2 * r;
+    int x = 0;
+    int y = r;
+	while (x < y)
+	{	
+		plot (-x+H, -y+K);
+		plot (-y+H, -x+K);
+		plot (y+H, -x+K);
+		plot (x+H, -y+K);
+		
+		if (d <= 0)
+		{
+			d = d+4*x+6;
+			x += 1;
+		}
+		else
+		{
+			d = d+4*(x-y)+10;
+			x += 1;
+			y -= 1;
+		}
+	}
+}
+
+void Spiral()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+    for (int i = -h; i <= h; i++)
+	{
+		plot(i, 0);    //Plot X-Axis
+		plot(0, i);    //Plot Y-Axis
+	}
+	for(int i = 0; i < 7; i++)
+	{
+		UpperHalf();
+		H += 20;
+		r += 20;
+		
+		LowerHalf();
+		H -= 20;
+		r += 20;
+	}
     glFlush();
 }
 
-void createMenu()
+void display(void)
 {
-    glutCreateMenu(drawScene);
-    glutAddMenuEntry("Circle", 1);
-    glutAddMenuEntry("Concentric Circles", 2);
-    glutAddMenuEntry("Olympic Circles", 3);
-    glutAddMenuEntry("Spiral", 4);
-    //glutAttachMenu(GLUT_RIGHT_BUTTON);
+	glClear(GL_COLOR_BUFFER_BIT);
+	
+	glFlush();
 }
 
-void Init()
+void myMouse(int BUTTON, int state, int x, int y)
 {
-  glClearColor(1.0,1.0,1.0,0);
-  glColor3f(0.0,0.0,0.0);
-  gluOrtho2D(0 , 640 , 0 , 480);
+	if (state == GLUT_DOWN)
+	{
+        if (BUTTON == GLUT_LEFT_BUTTON)
+		{
+			if (x1 == -1)
+            {
+                x1 = 500-x;
+                ya = 500-y;
+            }
+            else
+            {
+                x2 = 500-x;
+                y2 = 450-y;
+
+                if (button == 1)
+				{
+					CircleWithAxis(x1, ya, x2, y2);	
+				}
+				
+				else if (button == 2)
+				{
+					OlympicRing();
+				}
+				
+				else if (button == 3)
+				{
+					ConcentricCircle(x1, ya, x2, y2);
+				}
+				
+				else if (button == 4)
+				{
+					Spiral();
+				}
+                glFlush();
+                x1=-1;
+            }
+        }
+        else if(BUTTON == GLUT_MIDDLE_BUTTON)
+        {
+            for (int i = -h; i <= h; i++)
+			{
+				plot(i, 0);    //Plot X-Axis
+				plot(0, i);    //Plot Y-Axis
+			}
+        }
+    }
 }
 
-void display()
+void init(void)
 {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glFlush();
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(500.0, -500.0, -500.0, 500.0);  //Set origin
+		glColor3f(1.0, 1.0, 1.0);				
 }
 
-int main(int argc, char **argv)
+int main (int argc, char** argv)
 {
-  glutInit(&argc,argv);
-  glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-  glutInitWindowPosition(0,0);
-  glutInitWindowSize(1000,1000);
-  glutCreateWindow("bresenham_circle");
-  glutDisplayFunc(display);
-  createMenu();
-  glutMouseFunc(myMouse);
-  Init();
-  glutMainLoop();
-  
-  return 0;
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
+	glutInitWindowSize(1000, 1000);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow ("Menu : ");
+	glutDisplayFunc (display);
+	glutMouseFunc(myMouse);
+	glutCreateMenu(menu);
+	glutAddMenuEntry("Simple Circle", 1);
+	glutAddMenuEntry("Olympic Rings", 2);
+	glutAddMenuEntry("Concentric Circles", 3);
+	glutAddMenuEntry("Spiral", 4);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	init();
+	glutMainLoop();
+	return 0;
 }
