@@ -1,0 +1,16 @@
+#include <xc.h>
+
+void main(void) {
+    
+    static int num1 , num2 , sum;
+    
+    num1 = 0x02;
+    num2 = 0x05;
+    
+    sum = num1 + num2;
+    
+    TRISB = 0;
+    PORTB = sum;
+    
+    return;
+}

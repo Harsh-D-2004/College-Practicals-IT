@@ -1,0 +1,19 @@
+
+#include <xc.h>
+
+void main(void) {
+    
+    unsigned int num1 , num2;
+    unsigned int Ans;
+    
+    num1 = 0x02;
+    num2 = 0x04;
+    
+    Ans = num1 * num2;
+    
+    TRISD = 0;
+    PORTD = Ans;
+    
+    
+    return;
+}
