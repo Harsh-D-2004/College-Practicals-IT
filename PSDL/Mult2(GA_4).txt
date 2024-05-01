@@ -1,0 +1,25 @@
+
+#include <xc.h>
+
+void main(void) {
+    
+    unsigned int num1 , num2;
+    unsigned int Ans;
+    
+    num1 = 0x02;
+    num2 = 0x04;
+    
+    for(int i = 0 ; i < num2 ; i++)
+    {
+        Ans = Ans + num1;
+    }
+    
+    TRISD = 0;
+    PORTD = (unsigned int)Ans;
+    
+    TRISC = 0;
+    PORTC = (unsigned int)(Ans > 8);
+    
+    
+    return;
+}

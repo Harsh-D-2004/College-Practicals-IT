@@ -128,56 +128,56 @@ void OlympicRing()
 		plot (x+H, -y+K);
 		
 		
-		plot (x+H+2*r, y+K);
-		plot (-x+H+2*r, -y+K);
+		plot (x+H+2*r+10, y+K);
+		plot (-x+H+2*r+10, -y+K);
 		
-		plot (y+H+2*r, x+K);
-		plot (-y+H+2*r, -x+K);
+		plot (y+H+2*r+10, x+K);
+		plot (-y+H+2*r+10, -x+K);
 		
-		plot (-y+H+2*r, x+K);
-		plot (y+H+2*r, -x+K);
+		plot (-y+H+2*r+10, x+K);
+		plot (y+H+2*r+10, -x+K);
 		
-		plot (-x+H+2*r, y+K);
-		plot (x+H+2*r, -y+K);
-		
-		
-		plot (x+H+4*r, y+K);
-		plot (-x+H+4*r, -y+K);
-		
-		plot (y+H+4*r, x+K);
-		plot (-y+H+4*r, -x+K);
-		
-		plot (-y+H+4*r, x+K);
-		plot (y+H+4*r, -x+K);
-		
-		plot (-x+H+4*r, y+K);
-		plot (x+H+4*r, -y+K);
+		plot (-x+H+2*r+10, y+K);
+		plot (x+H+2*r+10, -y+K);
 		
 		
-		plot (x+H+r, y+K-r);
-		plot (-x+H+r, -y+K-r);
+		plot (x+H+4*r+20, y+K);
+		plot (-x+H+4*r+20, -y+K);
 		
-		plot (y+H+r, x+K-r);
-		plot (-y+H+r, -x+K-r);
+		plot (y+H+4*r+20, x+K);
+		plot (-y+H+4*r+20, -x+K);
 		
-		plot (-y+H+r, x+K-r);
-		plot (y+H+r, -x+K-r);
+		plot (-y+H+4*r+20, x+K);
+		plot (y+H+4*r+20, -x+K);
 		
-		plot (-x+H+r, y+K-r);
-		plot (x+H+r, -y+K-r);
+		plot (-x+H+4*r+20, y+K);
+		plot (x+H+4*r+20, -y+K);
 		
 		
-		plot (x+H+3*r, y+K-r);
-		plot (-x+H+3*r, -y+K-r);
+		plot (x+H+r+10, y+K-r);
+		plot (-x+H+r+10, -y+K-r);
 		
-		plot (y+H+3*r, x+K-r);
-		plot (-y+H+3*r, -x+K-r);
+		plot (y+H+r+10, x+K-r);
+		plot (-y+H+r+10, -x+K-r);
 		
-		plot (-y+H+3*r, x+K-r);
-		plot (y+H+3*r, -x+K-r);
+		plot (-y+H+r+10, x+K-r);
+		plot (y+H+r+10, -x+K-r);
 		
-		plot (-x+H+3*r, y+K-r);
-		plot (x+H+3*r, -y+K-r);
+		plot (-x+H+r+10, y+K-r);
+		plot (x+H+r+10, -y+K-r);
+		
+		
+		plot (x+H+3*r+10, y+K-r);
+		plot (-x+H+3*r+10, -y+K-r);
+		
+		plot (y+H+3*r+10, x+K-r);
+		plot (-y+H+3*r+10, -x+K-r);
+		
+		plot (-y+H+3*r+10, x+K-r);
+		plot (y+H+3*r+10, -x+K-r);
+		
+		plot (-x+H+3*r+10, y+K-r);
+		plot (x+H+3*r+10, -y+K-r);
 	}
     glFlush();
 }
@@ -327,7 +327,7 @@ void myMouse(int BUTTON, int state, int x, int y)
 			if (x1 == -1)
             {
                 x1 = 500-x;
-                ya = 500-y;
+                ya = 450-y;
             }
             else
             {
@@ -370,11 +370,11 @@ void myMouse(int BUTTON, int state, int x, int y)
 
 void init(void)
 {
-	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluOrtho2D(500.0, -500.0, -500.0, 500.0);  //Set origin
-		glColor3f(1.0, 1.0, 1.0);				
+		glColor3f(0.0, 0.0, 0.0);				
 }
 
 int main (int argc, char** argv)
