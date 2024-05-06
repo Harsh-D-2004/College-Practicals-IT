@@ -1,1 +1,0 @@
-All the programs are written in Java Programming Language using Eclipse IDE.
