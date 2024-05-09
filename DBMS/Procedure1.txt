@@ -1,0 +1,22 @@
+mysql&gt;create procedure calpercentage()
+begin
+declare s1,s2,s3,tot int(3);
+declare per float(5,2);
+declare grde varchar(20);
+declare i,cnt,id int(10);
+SET i=0;
+select count(*) into cnt from student;
+while i&lt;cnt do
+select sno,sub1,sub2,sub3 into id,s1,s2,s3 from student limit i,1;
+SET tot=(s1+s2+s3);
+SET per=tot/3;
+if per&gt;40 then
+SET grde=&#39;PASS&#39;;
+else
+SET grde=&#39;FAIL&#39;;
+end If;
+SELECT tot,per,grde;
+update student SET total=tot,percentage=per,grade=grde where sno=id;
+SET i=i+1;
+end while;
+end //
