@@ -1,0 +1,44 @@
+-- Create departments table
+CREATE TABLE departments (
+    department_id INT PRIMARY KEY,
+    department_name VARCHAR(50)
+);
+
+-- Create employees table with foreign key constraint
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    department_id INT,
+    salary DECIMAL(10, 2),
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+);
+
+-- Inserting data into departments table
+INSERT INTO departments (department_id, department_name)
+VALUES (1, 'Marketing'),
+       (2, 'Finance');
+
+-- Inserting data into employees table
+INSERT INTO employees (employee_id, first_name, last_name, department_id, salary)
+VALUES (101, 'John', 'Doe', 1, 50000),
+       (102, 'Jane', 'Smith', 2, 60000);
+
+-- Create views for departments and employees tables
+CREATE VIEW departments_view AS
+SELECT department_id, department_name
+FROM departments;
+
+CREATE VIEW employees_view AS
+SELECT employee_id, first_name, last_name, department_name, salary
+FROM employees
+JOIN departments ON employees.department_id = departments.department_id;
+
+-- Update an employee's salary through the view
+UPDATE employees_view
+SET salary = 55000
+WHERE employee_id = 101;
+
+-- Delete an employee through the view
+DELETE FROM employees_view
+WHERE employee_id = 102;
