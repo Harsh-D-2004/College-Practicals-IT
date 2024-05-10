@@ -42,3 +42,40 @@ WHERE employee_id = 101;
 -- Delete an employee through the view
 DELETE FROM employees_view
 WHERE employee_id = 102;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Inner Join
+SELECT *
+FROM employees
+INNER JOIN departments ON employees.department_id = departments.department_id;
+
+-- Left Join
+SELECT *
+FROM employees
+LEFT JOIN departments ON employees.department_id = departments.department_id;
+
+-- Right Join
+SELECT *
+FROM employees
+RIGHT JOIN departments ON employees.department_id = departments.department_id;
+
+-- Full Outer Join
+SELECT *
+FROM employees
+FULL OUTER JOIN departments ON employees.department_id = departments.department_id;
